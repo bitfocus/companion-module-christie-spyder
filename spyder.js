@@ -121,7 +121,7 @@ instance.prototype.actions = function(system) {
 				 	label: 'Transition Mix on/off',
 					id: 'mix',
 					default: '1',
-					choices: { 1: 'Mix On', 0: 'Mix Off' }
+					choices: [ { id: 1, label: 'Mix On' }, { id: 0, label: 'Mix Off' } ]
 				},
 				{
 					type: 'textinput',
@@ -147,7 +147,7 @@ instance.prototype.actions = function(system) {
 				 	label: 'Freeze Layer on/off',
 					id: 'frzonoff',
 					default: '1',
-					choices: { 1: 'Freeze On', 0: 'Freeze Off' }
+					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
 				},
 				{
 					type: 'textinput',
@@ -198,7 +198,7 @@ instance.prototype.actions = function(system) {
 				 	label: 'Freeze Output on/off',
 					id: 'frzonoff',
 					default: '1',
-					choices: { 1: 'Freeze On', 0: 'Freeze Off' }
+					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
 				},
 				{
 					type: 'textinput',
