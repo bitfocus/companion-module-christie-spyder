@@ -98,14 +98,14 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					 type: 'textinput',
-					 label: 'Script/Register ID',
+					 label: 'Script ID/Register ID',
 					 id: 'sidx',
 					 default: 1,
 					 regex: self.REGEX_NUMBER
 				},
 				{
 					type: 'textinput',
-					label: 'Cue ID',
+					label: 'Script Cue',
 					id: 'cidx',
 					default: 1,
 					regex: self.REGEX_NUMBER
