@@ -98,7 +98,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					 type: 'textinput',
-					 label: 'Script ID',
+					 label: 'Script/Register ID',
 					 id: 'sidx',
 					 default: 1,
 					 regex: self.REGEX_NUMBER
@@ -109,7 +109,14 @@ instance.prototype.actions = function(system) {
 					id: 'cidx',
 					default: 1,
 					regex: self.REGEX_NUMBER
-				}
+				},
+				{
+					type: 'dropdown',
+					label: 'ID Type being recalled',
+					id: 'type',
+					default: 'S',
+					choices: [ { id: 'S', label: 'ScriptID' }, { id: 'R', label: 'RegisterID' } ]
+				},
 			]
 		},
 
@@ -246,7 +253,7 @@ instance.prototype.action = function(action) {
 			break;
 
 		case 'rsc':
-			cmd = 'spyder\x00\x00\x00\x00RSC' +' '+ opt.sidx +' '+ opt.cidx;
+			cmd = 'spyder\x00\x00\x00\x00RSC' +' '+ opt.sidx +' '+ opt.cidx + ' ' + opt.type;
 			break;
 
 		case 'trn':
