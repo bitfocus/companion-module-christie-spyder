@@ -115,7 +115,7 @@ instance.prototype.actions = function(system) {
 					label: 'ID Type being recalled',
 					id: 'type',
 					default: 'S',
-					choices: [ { id: 'S', label: 'ScriptID' }, { id: 'R', label: 'RegisterID' } ]
+					choices: [ { id: 'S', label: 'ScriptID (default)' }, { id: 'R', label: 'RegisterID' } ]
 				},
 			]
 		},
