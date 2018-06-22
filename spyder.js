@@ -279,7 +279,7 @@ instance.prototype.action = function(action) {
 		debug( "Sending ",cmd,"to",self.config.host);
 
 		if (self.udp !== undefined) {
-			self.udp.send(cmd);
+			self.udp.send(cmd + "\r");
 		}
 	}
 
