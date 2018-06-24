@@ -72,6 +72,9 @@ instance.prototype.actions = function(system) {
 	var self = this;
 
 	self.system.emit('instance_actions', self.id, {
+		'asc': {
+			label: 'Take'
+		},
 		'bpr': {
 			label: 'Basic Preset Recall (Index Nr)',
 			options: [
@@ -248,45 +251,49 @@ instance.prototype.action = function(action) {
 
 	switch (action.action) {
 
+		case 'asc':
+			cmd = 'ASC';
+			break;
+
 		case 'bpr':
-			cmd = 'spyder\x00\x00\x00\x00BPR' +' '+ opt.idx +' '+  opt.dur;
+			cmd = 'BPR' +' '+ opt.idx +' '+  opt.dur;
 			break;
 
 		case 'rsc':
-			cmd = 'spyder\x00\x00\x00\x00RSC' +' '+ opt.sidx +' '+ opt.cidx + ' ' + opt.type;
+			cmd = 'RSC' +' '+ opt.sidx +' '+ opt.cidx + ' ' + opt.type;
 			break;
 
 		case 'trn':
-			cmd = 'spyder\x00\x00\x00\x00TRN' +' '+ opt.mix +' '+ opt.dur +' '+ opt.lay;
+			cmd = 'TRN' +' '+ opt.mix +' '+ opt.dur +' '+ opt.lay;
 			break;
 
 		case 'frz':
-			cmd = 'spyder\x00\x00\x00\x00FRZ' +' '+ opt.frzonof +' '+ opt.lay;
+			cmd = 'FRZ' +' '+ opt.frzonoff +' '+ opt.lay;
 			break;
 
 		case 'btr':
-			cmd = 'spyder\x00\x00\x00\x00BTR' +' '+ opt.dur;
+			cmd = 'BTR' +' '+ opt.dur;
 			break;
 
 		case 'fkr':
-			cmd = 'spyder\x00\x00\x00\x00FKR' +' '+ opt.fkrid +' '+ opt.lay;
+			cmd = 'FKR' +' '+ opt.fkrid +' '+ opt.lay;
 			break;
 
 		case 'ofz':
-			cmd = 'spyder\x00\x00\x00\x00OFZ' +' '+ opt.frzonoff +' '+ opt.output;
+			cmd = 'OFZ' +' '+ opt.frzonoff +' '+ opt.output;
 			break;
 
 		case 'dmt':
-			cmd = 'spyder\x00\x00\x00\x00DMT' +' '+ opt.dur +' '+ opt.dev;
+			cmd = 'DMT' +' '+ opt.dur +' '+ opt.dev;
 			break
 
 	}
 
 	if (cmd !== undefined) {
-		debug( "Sending ",cmd,"to",self.config.host);
+		debug("Sending ", cmd, "to", self.config.host);
 
 		if (self.udp !== undefined) {
-			self.udp.send(cmd + "\r");
+			self.udp.send('spyder\x00\x00\x00\x00' + cmd + "\r");
 		}
 	}
 
