@@ -73,8 +73,24 @@ instance.prototype.actions = function(system) {
 
 	self.system.emit('instance_actions', self.id, {
 		'asc': {
-			label: 'Take'
+			label: 'Take (Advance Script Cue)',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Cues to advance / step Back',
+					id: 'cueNum',
+					default: '0',
+					choices: [
+						{ id: '-10', label: 'Step back 10 Cues'},
+						{ id: '-1',  label: 'Step back 1 Cue' },
+						{ id: '0',   label: 'None / Take'},
+						{ id: '+1',  label: 'Advance 1 Cue' },
+						{ id: '+10', label: 'Advance 10 Cues' }
+					]
+				}
+			]
 		},
+
 		'bpr': {
 			label: 'Basic Preset Recall (Index Nr)',
 			options: [
@@ -252,7 +268,13 @@ instance.prototype.action = function(action) {
 	switch (action.action) {
 
 		case 'asc':
-			cmd = 'ASC';
+			if (opt.cueNum == 0) {
+				cmd = 'ASC';
+				break;
+			}
+			if (opt.cueNum != 0) {
+				cmd = 'ASC ' + opt.cueNum;
+			}
 			break;
 
 		case 'bpr':
