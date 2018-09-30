@@ -144,7 +144,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					type: 'dropdown',
-				 	label: 'Transition Mix on/off',
+					 label: 'Transition Mix on/off',
 					id: 'mix',
 					default: '1',
 					choices: [ { id: 1, label: 'Mix On' }, { id: 0, label: 'Mix Off' } ]
@@ -170,7 +170,7 @@ instance.prototype.actions = function(system) {
 			options:[
 				{
 					type: 'dropdown',
-				 	label: 'Freeze Layer on/off',
+					 label: 'Freeze Layer on/off',
 					id: 'frzonoff',
 					default: '1',
 					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
@@ -186,7 +186,7 @@ instance.prototype.actions = function(system) {
 
 		'btr':	{
 			label: 'Background Transition',
-		 	options:[
+			 options:[
 				{
 					type: 'textinput',
 					label: 'duration',
@@ -221,7 +221,7 @@ instance.prototype.actions = function(system) {
 			options:[
 				{
 					type: 'dropdown',
-				 	label: 'Freeze Output on/off',
+					 label: 'Freeze Output on/off',
 					id: 'frzonoff',
 					default: '1',
 					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
@@ -240,19 +240,19 @@ instance.prototype.actions = function(system) {
 			 options:[
 				 {
 					type: 'textinput',
- 					label: 'duration',
- 					id: 'dur',
- 					default: 60,
- 					regex: self.REGEX_NUMBER
+					 label: 'duration',
+					 id: 'dur',
+					 default: 60,
+					 regex: self.REGEX_NUMBER
 				 },
 				 {
 					type: 'textinput',
- 					label: 'Device(s)',
- 					id: 'dev',
- 					default: 1
+					 label: 'Device(s)',
+					 id: 'dev',
+					 default: 1
 				 }
 			 ]
-		  },
+			},
 
 	});
 }
@@ -321,12 +321,6 @@ instance.prototype.action = function(action) {
 
 	debug('action():', action);
 
-};
-
-instance.module_info = {
-	label: 'Spyder UDP',
-	id: 'spyder',
-	version: '0.0.2'
 };
 
 instance_skel.extendedBy(instance);
