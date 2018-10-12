@@ -315,7 +315,7 @@ instance.prototype.action = function(action) {
 		debug("Sending ", cmd, "to", self.config.host);
 
 		if (self.udp !== undefined) {
-			self.udp.send('spyder\x00\x00\x00\x00' + cmd + "\r");
+			self.udp.send('spyder\x00\x00\x00\x00' + cmd);
 		}
 	}
 
