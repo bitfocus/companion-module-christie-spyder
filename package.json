@@ -3,9 +3,11 @@
 	"legacy": [
 		"spyder"
 	],
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"api_version": "1.0.0",
-	"keywords": [ "Image Processing" ],
+	"keywords": [
+		"Image Processing"
+	],
 	"manufacturer": "Christie",
 	"product": "Spyder X20/X80",
 	"shortname": "spyder",
