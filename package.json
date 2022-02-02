@@ -17,5 +17,13 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Per Røine <per.roine@gmail.com>",
-	"license": "ISC"
+	"license": "ISC",
+	"homepage": "https://github.com/bitfocus/companion-module-christie-spyder#readme",
+	"bugs": {
+		"url": "https://github.com/bitfocus/companion-module-christie-spyder/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-christie-spyder.git"
+	}
 }
