@@ -1,29 +1,16 @@
 {
 	"name": "christie-spyder",
-	"legacy": [
-		"spyder"
-	],
-	"version": "1.0.2",
-	"api_version": "1.0.0",
-	"keywords": [
-		"Image Processing"
-	],
-	"manufacturer": "Christie",
-	"product": "Spyder X20/X80",
-	"shortname": "spyder",
-	"description": "spyder plugin for Companion",
+	"version": "1.2.0",
 	"main": "spyder.js",
+	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "Per Røine <per.roine@gmail.com>",
-	"license": "ISC",
-	"homepage": "https://github.com/bitfocus/companion-module-christie-spyder#readme",
-	"bugs": {
-		"url": "https://github.com/bitfocus/companion-module-christie-spyder/issues"
+	"license": "MIT",
+	"dependencies": {
+		"@companion-module/base": "~1.4.1"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-christie-spyder.git"
+	"devDependencies": {
+		"@companion-module/tools": "^1.3.2"
 	}
 }

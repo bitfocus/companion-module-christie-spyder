@@ -1,327 +1,107 @@
-var instance_skel = require('../../instance_skel');
-var udp           = require('../../udp');
-var debug;
-var log;
+import { combineRgb, Regex, UDPHelper } from '@companion-module/base'
+import { runEntrypoint, InstanceBase, InstanceStatus } from '@companion-module/base'
+import { compileActionDefinitions } from './actions.js'
 
-function instance(system, id, config) {
-	var self = this;
+const UpgradeScripts = []
 
-	// super-constructor
-	instance_skel.apply(this, arguments);
+class SpyderInstance extends InstanceBase {
+	constructor(internal) {
+		// super-constructor
+		super(internal)
 
-	self.actions(); // export actions
-
-	return self;
-}
-
-instance.prototype.updateConfig = function(config) {
-	var self = this;
-
-	self.config = config;
-	self.init_udp();
-};
-
-instance.prototype.init_udp = function() {
-	var self = this;
-
-	if (self.config.host !== undefined) {
-		self.udp = new udp(self.config.host, 11116);
-
-		self.udp.on('status_change', function (status, message) {
-			self.status(status, message);
-		});
+		this.devMode = process.env.DEVELOPER
+		this.hasError = false
 	}
-};
 
-instance.prototype.init = function() {
-	var self = this;
+	sendCmd = async (cmd) => {
+		if (cmd !== undefined) {
+			let c = cmd.slice(0, 3)
+			this.log('info', `Sending ${cmd} to ${this.config.host}`)
 
-	debug = self.debug;
-	log = self.log;
+			if (this.udp !== undefined) {
+				this.udp.send('spyder\x00\x00\x00\x00' + cmd)
 
-	self.status(self.STATUS_UNKNOWN);
-
-	self.init_udp();
-};
-
-// Return config fields for web config
-instance.prototype.config_fields = function () {
-	var self = this;
-	return [
-		{
-			type: 'textinput',
-			id: 'host',
-			label: 'Target IP',
-			width: 6,
-			regex: self.REGEX_IP
+			// TODO: save c for later response validation
+			}
 		}
-	]
-};
-
-// When module gets deleted
-instance.prototype.destroy = function() {
-	var self = this;
-
-	if (self.udp !== undefined) {
-		self.udp.destroy();
 	}
-	debug("destroy", self.id);
-};
 
-instance.prototype.actions = function(system) {
-	var self = this;
+	async init(config) {
+		this.hasError = false
+		this.config = config
 
-	self.setActions({
-		'asc': {
-			label: 'Take (Advance Script Cue)',
-			options: [
-				{
-					type: 'dropdown',
-					label: 'Cues to advance / step Back',
-					id: 'cueNum',
-					default: '0',
-					choices: [
-						{ id: '-10', label: 'Step back 10 Cues'},
-						{ id: '-1',  label: 'Step back 1 Cue' },
-						{ id: '0',   label: 'None / Take'},
-						{ id: '+1',  label: 'Advance 1 Cue' },
-						{ id: '+10', label: 'Advance 10 Cues' }
-					]
+		this.start('Initializing')
+	}
+
+	async updateConfig(config) {
+		await this.destroy()
+		this.config = config
+		this.start('Restarting')
+	}
+
+	// When module gets deleted
+	async destroy() {
+		this.updateStatus(InstanceStatus.Disconnected, 'Closed')
+		if (this.udp !== undefined) {
+			this.udp.destroy()
+		}
+	}
+
+	start(msg) {
+		this.updateStatus(InstanceStatus.Connecting, msg)
+		this.setActionDefinitions(compileActionDefinitions(this))
+		this.init_udp()
+	}
+
+	init_udp() {
+		if (this.config.host !== undefined) {
+			this.udp = new UDPHelper(this.config.host, 11116)
+
+			// this.udp.on('status_change', (status, message) => {
+			// 	this.updateStatus(status, message)
+			// })
+
+			this.udp.on('error', (error) => {
+				if (!this.hasError) {
+					this.log('debug', `Network error ${err}`)
+					this.updateStatus(InstanceStatus.UnknownError, err.message)
+					this.log('error', 'Network error: ' + err.message)
+					this.hasError = true
 				}
-			]
-		},
+			})
 
-		'bpr': {
-			label: 'Basic Preset Recall (Index Nr)',
-			options: [
-				{
-					 type: 'textinput',
-					 label: 'Preset Index',
-					 id: 'idx',
-					 default: 1,
-					 regex: self.REGEX_NUMBER
-				},
-				{
-					type: 'textinput',
-					label: 'Duration (Optional)',
-					id: 'dur',
-					default: 1,
-					regex: self.REGEX_NUMBER
+			this.udp.on('data', (data) => {
+				let msg = data.toString()
+
+				switch (msg.slice(0,1)) {
+					case '0':   // all good
+						this.updateStatus(InstanceStatus.Ok,'Connected')
+						// TODO: expected data responses would be decoded and saved here
+						break
 				}
 
-			]
-		},
+			})
 
-		'rsc': {
-			label: 'Recall Script Cue (Script, Cue)',
-			options: [
-				{
-					 type: 'textinput',
-					 label: 'Script ID/Register ID',
-					 id: 'sidx',
-					 default: 1,
-					 regex: self.REGEX_NUMBER
-				},
-				{
-					type: 'textinput',
-					label: 'Script Cue',
-					id: 'cidx',
-					default: 1,
-					regex: self.REGEX_NUMBER
-				},
-				{
-					type: 'dropdown',
-					label: 'ID Type being recalled',
-					id: 'type',
-					default: 'S',
-					choices: [ { id: 'S', label: 'ScriptID (default)' }, { id: 'R', label: 'RegisterID' } ]
-				},
-			]
-		},
+			this.udp.on('listening',() => {
+				this.updateStatus(InstanceStatus.Ok,'UDP Listening')
+				// send a simple query (layers)
+				this.sendCmd('RLC')
+			})
+		}
+	}
 
-		'trn': {
-			label: 'Transition layer(s)',
-			options: [
-				{
-					type: 'dropdown',
-					 label: 'Transition Mix on/off',
-					id: 'mix',
-					default: '1',
-					choices: [ { id: 1, label: 'Mix On' }, { id: 0, label: 'Mix Off' } ]
-				},
-				{
-					type: 'textinput',
-					label: 'duration',
-					id: 'dur',
-					default: 60,
-					regex: self.REGEX_NUMBER
-				},
-				{
-					type: 'textinput',
-					label: 'Layer(s) input multiple layers space delimited',
-					id: 'lay',
-					default: ''
-				}
-			]
-		},
-
-		'frz':	{
-			label: 'Freeze Layer(s)',
-			options:[
-				{
-					type: 'dropdown',
-					 label: 'Freeze Layer on/off',
-					id: 'frzonoff',
-					default: '1',
-					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
-				},
-				{
-					type: 'textinput',
-					label: 'Layer(s) input multiple layers space delimited',
-					id: 'lay',
-					default: 1
-				}
-			]
-		},
-
-		'btr':	{
-			label: 'Background Transition',
-			 options:[
-				{
-					type: 'textinput',
-					label: 'duration',
-					id: 'dur',
-					default: 60,
-					regex: self.REGEX_NUMBER
-				}
-			]
-		},
-
-		'fkr':	{
-			label: 'Function Key Recall',
-			options:[
-				{
-					type: 'textinput',
-					label: 'Funktion key ID',
-					id: 'fkrid',
-					default: 1,
-					regex: self.REGEX_NUMBER
-				},
-				{
-					type: 'textinput',
-					label: 'Layer(s) input multiple layers space delimited',
-					id: 'lay',
-					default: 1
-				}
-			]
-		},
-
-		'ofz':	{
-			label: 'Output Freeze',
-			options:[
-				{
-					type: 'dropdown',
-					 label: 'Freeze Output on/off',
-					id: 'frzonoff',
-					default: '1',
-					choices: [ { id: 1, label: 'Freeze On' }, { id: 0, label: 'Freeze Off' } ]
-				},
-				{
-					type: 'textinput',
-					label: 'Output(s)input multiple outputs space delimited',
-					id: 'output',
-					default: 1
-				}
-			]
-		 },
-
-		'dmt':	{
-			 label: 'Device Mixer Transition',
-			 options:[
-				 {
-					type: 'textinput',
-					 label: 'duration',
-					 id: 'dur',
-					 default: 60,
-					 regex: self.REGEX_NUMBER
-				 },
-				 {
-					type: 'textinput',
-					 label: 'Device(s)',
-					 id: 'dev',
-					 default: 1
-				 }
-			 ]
+	// Return config fields for web config
+	getConfigFields() {
+		return [
+			{
+				type: 'textinput',
+				id: 'host',
+				label: 'Target IP',
+				width: 6,
+				regex: Regex.IP,
 			},
-
-	});
+		]
+	}
 }
 
-
-instance.prototype.action = function(action) {
-	var self = this;
-	var id = action.action;
-	var cmd;
-	var opt = action.options;
-	// spyder port 11116
-
-	switch (action.action) {
-
-		case 'asc':
-			if (opt.cueNum == 0) {
-				cmd = 'ASC';
-				break;
-			}
-			if (opt.cueNum != 0) {
-				cmd = 'ASC ' + opt.cueNum;
-			}
-			break;
-
-		case 'bpr':
-			cmd = 'BPR' +' '+ opt.idx +' '+  opt.dur;
-			break;
-
-		case 'rsc':
-			cmd = 'RSC' +' '+ opt.sidx +' '+ opt.cidx + ' ' + opt.type;
-			break;
-
-		case 'trn':
-			cmd = 'TRN' +' '+ opt.mix +' '+ opt.dur +' '+ opt.lay;
-			break;
-
-		case 'frz':
-			cmd = 'FRZ' +' '+ opt.frzonoff +' '+ opt.lay;
-			break;
-
-		case 'btr':
-			cmd = 'BTR' +' '+ opt.dur;
-			break;
-
-		case 'fkr':
-			cmd = 'FKR' +' '+ opt.fkrid +' '+ opt.lay;
-			break;
-
-		case 'ofz':
-			cmd = 'OFZ' +' '+ opt.frzonoff +' '+ opt.output;
-			break;
-
-		case 'dmt':
-			cmd = 'DMT' +' '+ opt.dur +' '+ opt.dev;
-			break
-
-	}
-
-	if (cmd !== undefined) {
-		debug("Sending ", cmd, "to", self.config.host);
-
-		if (self.udp !== undefined) {
-			self.udp.send('spyder\x00\x00\x00\x00' + cmd);
-		}
-	}
-
-	debug('action():', action);
-
-};
-
-instance_skel.extendedBy(instance);
-exports = module.exports = instance;
+runEntrypoint(SpyderInstance, UpgradeScripts)
