@@ -36,7 +36,7 @@ class SpyderInstance extends InstanceBase {
 		//this.log('info', `Sending ${cmd} to ${this.config.host}`)
 
 		if (this.udp !== undefined) {
-			this.udp.send('spyder\x00\x00\x00\x00' + cmd)
+			await this.udp.send('spyder\x00\x00\x00\x00' + cmd)
 			// save cmd for to store with next incoming response
 			this.pending.push({ cmd: c, sent: now })
 			this.lastCmd = cmd
@@ -127,7 +127,7 @@ class SpyderInstance extends InstanceBase {
 											let name = decodeURIComponent(r[i * 2 + 1])
 											let rr = this.reg[id]
 											if (rr === undefined) {
-												rr = { id, active: false }
+												rr = { id, active: false, scriptId: null }
 												this.variableDefs.push({ name: `Register ${id + 1} name`, variableId: `r_name_${id + 1}` })
 												newReg = true
 											}
@@ -142,14 +142,18 @@ class SpyderInstance extends InstanceBase {
 										for (let s in this.reg) {
 											await this.cueCmd(`RRD 4 ${this.reg[s].id}`)
 											await this.cueCmd(`SCR ${this.reg[s].id} R`)
+											if (this.reg[s].scriptId) {
+												await this.cueCmd(`SCR ${this.reg[s].scriptId} S`)
+											}
 										}
 										break
 								}
 								break
 							case 'SCR':
 								let nv = !!(msg.split(' ')[1] == 1)
-								if (nv != this.reg[cmds[1]].active) {
-									this.reg[cmds[1]].active = nv
+								let rr = cmds[2] == 'R' ? cmds[1] : this.script2reg[cmds[1]]
+								if (nv != this.reg[rr].active) {
+									this.reg[rr].active = nv
 									this.checkFeedbacks('inp_ok')
 								}
 								break
@@ -198,24 +202,26 @@ class SpyderInstance extends InstanceBase {
 				this.variableDefs = []
 				this.variableValues = {}
 				this.poll()
-				this.pollTimer = setInterval(async () => await this.poll(), 25)
+				this.pollTimer = setInterval(async () => await this.poll(), 2500)
 			})
 		}
 	}
 
 	async poll() {
 		if (this.nextCmd.length) {
+			// command queue not empty
 			if (!this.pending.length) {
+				// no commands outstanding
 				await this.cueCmd(this.nextCmd.shift())
 				this.saveLast = this.lastCmd
 				this.lastCount = 0
 			} else {
 				// count how many times 'pending' is the same
-				// too many and we must have missed a response
+				// after a few ticks, we must have missed a response
 				// resend the command
 				if (this.saveLast == this.lastCmd) {
-					if (this.lastCount++ > 3) {
-						// no response 100ms, re-send
+					if (this.lastCount++ >= 2) {
+						// no response 5s, re-send
 						this.pending.shift()
 						await this.sendCmd(this.saveLast)
 						this.lastCount = 0
