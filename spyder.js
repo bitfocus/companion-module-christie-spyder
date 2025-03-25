@@ -33,7 +33,7 @@ class SpyderInstance extends InstanceBase {
 			c = c.slice(0, 2)
 		}
 		c = c.join(' ')
-		//this.log('info', `Sending ${cmd} to ${this.config.host}`)
+		this.log('info', `Sending ${cmd} to ${this.config.host}`)
 
 		if (this.udp !== undefined) {
 			await this.udp.send('spyder\x00\x00\x00\x00' + cmd)
@@ -46,7 +46,6 @@ class SpyderInstance extends InstanceBase {
 	async init(config) {
 		this.hasError = false
 		this.config = config
-
 		this.start('Initializing')
 	}
 
@@ -73,14 +72,10 @@ class SpyderInstance extends InstanceBase {
 		this.status = {}
 		this.init_udp()
 	}
-
+	
 	init_udp() {
 		if (this.config.host !== undefined) {
 			this.udp = new UDPHelper(this.config.host, 11116)
-
-			// this.udp.on('status_change', (status, message) => {
-			// 	this.updateStatus(status, message)
-			// })
 
 			this.udp.on('error', (error) => {
 				if (!this.hasError) {
@@ -101,8 +96,7 @@ class SpyderInstance extends InstanceBase {
 				if (cmd == undefined || cmd.cmd.includes('NaN')) {
 					return // unexpected response
 				}
-
-				// this.log('info', `Rcvd: ${this.nextCmd.length}:(${cmd.cmd}) ${msg}`)
+				this.log('info', `Rcvd: ${this.nextCmd.length}:(${cmd.cmd}) ${msg}`)
 
 				switch (msg.slice(0, 1)) {
 					case '0': // all good
@@ -125,57 +119,122 @@ class SpyderInstance extends InstanceBase {
 										for (let i = 0; i < c; i++) {
 											let id = parseInt(r[i * 2])
 											let name = decodeURIComponent(r[i * 2 + 1])
-											let rr = this.reg[id]
+											let rr = this.reg[-1]
 											if (rr === undefined) {
 												rr = { id, active: false, scriptId: null }
-												this.variableDefs.push({ name: `Register ${id + 1} name`, variableId: `r_name_${id + 1}` })
+												this.variableDefs.push({ name: `Script ${id}`, variableId: `ck_${id}` })
 												newReg = true
 											}
 											if (rr.name != name) {
 												rr.name = decodeURIComponent(r[i * 2 + 1])
-												this.variableValues[`r_name_${id + 1}`] = name
+												this.variableValues[`ck_${id}`] = name
 												newNames = true
 											}
 											this.reg[r[i * 2]] = rr
 										}
-
-										for (let s in this.reg) {
-											await this.cueCmd(`RRD 4 ${this.reg[s].id}`)
-											await this.cueCmd(`SCR ${this.reg[s].id} R`)
-											if (this.reg[s].scriptId) {
-												await this.cueCmd(`SCR ${this.reg[s].scriptId} S`)
+										break
+									
+									case '5':
+										let r5 = msg.slice(2).split(' ')
+										let c5 = r5.shift()
+										for (let i = 0; i < c5; i++) {
+											let id5 = parseInt(r5[i * 2])
+											let name5 = decodeURIComponent(r5[i * 2 + 1])
+											let rr5 = this.reg[-1]
+											if (rr5 === undefined) {
+												rr5 = { id5, active: false, scriptId: null }
+												this.variableDefs.push({ name: `Treatment ${id5}`, variableId: `trmt_${id5}` })
+												newReg = true
 											}
+											if (rr5.name != name5) {
+												rr5.name = decodeURIComponent(r5[i * 2 + 1])
+												this.variableValues[`trmt_${id5}`] = name5
+												newNames = true
+											}
+											this.reg[r5[i * 2]] = rr5
 										}
 										break
-								}
-								break
-							case 'SCR':
-								let nv = !!(msg.split(' ')[1] == 1)
-								let rr = cmds[2] == 'R' ? cmds[1] : this.script2reg[cmds[1]]
-								if (nv != this.reg[rr].active) {
-									this.reg[rr].active = nv
-									this.checkFeedbacks('inp_ok')
-								}
-								break
-							case 'RRD':
-								const val = msg.split(' ')
-								if (val.length != 4 || cmds[2] == 'NaN') {
-									return // bad response
-								}
-								let id = parseInt(val[1])
 
-								this.reg[cmds[2]].scriptId = id
-								this.reg[cmds[2]].relative = !!val[2]
-								this.reg[cmds[2]].numCues = val[3]
-								if (!this.script2reg[val[1]]) {
-									this.variableDefs.push({ name: `Script ${id} name`, variableId: `s_name_${id}` })
-									this.variableValues[`s_name_${id}`] = this.reg[cmds[2]].name
-									this.script2reg[val[1]] = cmds[2]
-									newReg = true
-									newNames = true
-								}
+									case '6':
+										let r6 = msg.slice(2).split(' ')
+										let c6 = r6.shift()
+										for (let i = 0; i < c6; i++) {
+											let id6 = parseInt(r6[i * 2])
+											let name6 = decodeURIComponent(r6[i * 2 + 1])
+											let rr6 = this.reg[-1]
+											if (rr6 === undefined) {
+												rr6 = { id6, active: false, scriptId: null }
+												this.variableDefs.push({ name: `Source ${id6 + 1}`, variableId: `src_${id6 + 1}` })
+												newReg = true
+											}
+											if (rr6.name != name6) {
+												rr6.name = decodeURIComponent(r6[i * 2 + 1])
+												this.variableValues[`src_${id6 + 1}`] = name6
+												newNames = true
+											}
+											this.reg[r6[i * 2]] = rr6
+										}
+										break
 
-								break
+									case '7':
+										let r7 = msg.slice(2).split(' ')
+										let c7 = r7.shift()
+										for (let i = 0; i < c7; i++) {
+											let id7 = parseInt(r7[i * 2])
+											let name7 = decodeURIComponent(r7[i * 2 + 1])
+											let rr7 = this.reg[-1]
+											if (rr7 === undefined) {
+												rr7 = { id7, active: false, scriptId: null }
+												this.variableDefs.push({ name: `Function Key ${id7}`, variableId: `fnk_${id7}` })
+												newReg = true
+											}
+											if (rr7.name != name7) {
+												rr7.name = decodeURIComponent(r7[i * 2 + 1])
+												this.variableValues[`fnk_${id7}`] = name7
+												newNames = true
+											}
+											this.reg[r7[i * 2]] = rr7
+										}
+										break	
+
+									case '10':
+										let r10 = msg.slice(2).split(' ')
+										let c10 = r10.shift()
+										for (let i = 0; i < c10; i++) {
+											let id10 = parseInt(r10[i * 2])
+											let name10 = decodeURIComponent(r10[i * 2 + 1])
+											let rr10 = this.reg[-1]
+											//if (rr10 === undefined) {
+											//	rr10 = { id10, active: false, scriptId: null }
+												this.variableDefs.push({ name: `Still ${id10 + 1}`, variableId: `still_${id10 + 1}` })
+												newReg = true
+											//}
+											//if (rr10.name != name10) {
+											//	rr10.name = decodeURIComponent(r10[i * 2 + 1])
+												this.variableValues[`still_${id10 + 1}`] = name10
+												newNames = true
+											//}
+											this.reg[r10[i * 2]] = rr10
+										}
+										break										
+								}
+								case 'RLK':
+									for (let k = 2; k < 26; k++) {
+										if(cmds[1] == k) {
+											this.variableDefs.push({ name: `Layer${k - 1} // X Pos`, variableId: `layer${k - 1}_xpos` })
+											this.variableDefs.push({ name: `Layer${k - 1} // Y Pos`, variableId: `layer${k - 1}_ypos` })
+											this.variableDefs.push({ name: `Layer${k - 1} // X Size`, variableId: `layer${k - 1}_xsize` })
+											this.variableDefs.push({ name: `Layer${k - 1} // Y Size`, variableId: `layer${k - 1}_ysize` })
+											newReg = true
+											let l = msg.slice(2).split(' ')
+											this.variableValues[`layer${k - 1}_xpos`] = l[2]
+											this.variableValues[`layer${k - 1}_ypos`] = l[3]
+											this.variableValues[`layer${k - 1}_xsize`] = l[4]
+											this.variableValues[`layer${k - 1}_ysize`] = l[5]
+											newNames = true
+											}
+										}
+									break
 						}
 						if (newReg) {
 							this.setVariableDefinitions(this.variableDefs)
@@ -194,9 +253,6 @@ class SpyderInstance extends InstanceBase {
 
 			this.udp.on('listening', async () => {
 				this.updateStatus(InstanceStatus.Ok, 'UDP Listening')
-				// send a simple query (how many layers)
-				await this.cueCmd('RLC')
-				await this.cueCmd('RBL')
 				this.reg = {}
 				this.script2reg = {}
 				this.variableDefs = []
@@ -206,7 +262,7 @@ class SpyderInstance extends InstanceBase {
 			})
 		}
 	}
-
+	
 	async poll() {
 		if (this.nextCmd.length) {
 			// command queue not empty
@@ -233,15 +289,21 @@ class SpyderInstance extends InstanceBase {
 			}
 		} else {
 			// grab register names
-			const cmd = 'RRL 4 -1'
-			await this.cueCmd(cmd)
-			this.lastCount = 0
-			this.saveLast = cmd
+			for (let c of [0, 1, 4, 5, 6, 7, 10]) {
+				let cmd = `RRL ${c} -1`
+				await this.cueCmd(cmd)
+				this.lastCount = 0
+				this.saveLast = cmd
+			}
+			// grab layer keyframe values
+			for (let c = 2; c < 26; c++) { 
+				let cmd = `RLK ${c}`
+				await this.cueCmd(cmd)
+				this.lastCount = 0
+				this.saveLast = cmd
+			}
 		}
-		// for (let c of [0, 1, 4, 5, 6, 7, 10]) {
-		// 	this.cueCmd(`RRL ${c} -1`)
-		// }
-	}
+	}	
 	// Return config fields for web config
 	getConfigFields() {
 		return [
