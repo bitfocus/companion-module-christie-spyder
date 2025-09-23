@@ -72,6 +72,14 @@ class SpyderInstance extends InstanceBase {
 		this.status = {}
 		this.init_udp()
 	}
+
+	addVariableDefIfNotExists(def) {
+	if (!this.variableDefs.some(v => v.variableId === def.variableId)) {
+		this.variableDefs.push(def)
+		return true
+	}
+	return false
+}
 	
 	init_udp() {
 		if (this.config.host !== undefined) {
@@ -148,8 +156,9 @@ class SpyderInstance extends InstanceBase {
 										for (let i = 0; i < c5; i++) {
 											let id = parseInt(r5[i * 2])
 											let name = decodeURIComponent(r5[i * 2 + 1])
-											this.variableDefs.push({ name: `Treatment ${id}`, variableId: `trmt_${id}` })
+											if (this.addVariableDefIfNotExists({ name: `Treatment ${id}`, variableId: `trmt_${id}` })) {
 											newReg = true
+											}
 											this.variableValues[`trmt_${id}`] = name
 											newNames = true
 										}
@@ -161,8 +170,9 @@ class SpyderInstance extends InstanceBase {
 										for (let i = 0; i < c6; i++) {
 											let id = parseInt(r6[i * 2])
 											let name = decodeURIComponent(r6[i * 2 + 1])
-											this.variableDefs.push({ name: `Source ${id + 1}`, variableId: `src_${id + 1}` })
+											if (this.addVariableDefIfNotExists({ name: `Source ${id + 1}`, variableId: `src_${id + 1}` })) {
 											newReg = true
+											}
 											this.variableValues[`src_${id + 1}`] = name
 											newNames = true
 										}
@@ -174,8 +184,9 @@ class SpyderInstance extends InstanceBase {
 										for (let i = 0; i < c7; i++) {
 											let id = parseInt(r7[i * 2])
 											let name = decodeURIComponent(r7[i * 2 + 1])
-											this.variableDefs.push({ name: `Function Key ${id}`, variableId: `fnk_${id}` })
+											if (this.addVariableDefIfNotExists({ name: `Function Key ${id}`, variableId: `fnk_${id}` })) {
 											newReg = true
+											}
 											this.variableValues[`fnk_${id}`] = name
 											newNames = true
 										}
@@ -187,8 +198,9 @@ class SpyderInstance extends InstanceBase {
 										for (let i = 0; i < c10; i++) {
 											let id = parseInt(r10[i * 2])
 											let name = decodeURIComponent(r10[i * 2 + 1])
-											this.variableDefs.push({ name: `Still ${id + 1}`, variableId: `still_${id + 1}` })
+											if (this.addVariableDefIfNotExists({ name: `Still ${id + 1}`, variableId: `still_${id + 1}` })) {
 											newReg = true
+											}
 											this.variableValues[`still_${id + 1}`] = name
 											newNames = true
 										}
@@ -197,12 +209,19 @@ class SpyderInstance extends InstanceBase {
 
 								case 'RLK':
 									for (let k = 2; k < 26; k++) {
-										if(cmds[1] == k) {
-											this.variableDefs.push({ name: `Layer ${k - 1} // X Pos`, variableId: `l${k - 1}_xpos` })
-											this.variableDefs.push({ name: `Layer ${k - 1} // Y Pos`, variableId: `l${k - 1}_ypos` })
-											this.variableDefs.push({ name: `Layer ${k - 1} // X Size`, variableId: `l${k - 1}_xsize` })
-											this.variableDefs.push({ name: `Layer ${k - 1} // Y Size`, variableId: `l${k - 1}_ysize` })
+										if(cmds[1] == k) {																						
+											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Pos`, variableId: `l${k - 1}_xpos` })) {
 											newReg = true
+											}
+											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Pos`, variableId: `l${k - 1}_ypos` })) {
+											newReg = true
+											}
+											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Size`, variableId: `l${k - 1}_xsize` })) {
+											newReg = true
+											}
+											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Size`, variableId: `l${k - 1}_ysize` })) {
+											newReg = true
+											}
 											let l = msg.slice(2).split(' ')
 											this.variableValues[`l${k - 1}_xpos`] = l[2]
 											this.variableValues[`l${k - 1}_ypos`] = l[3]
@@ -233,11 +252,11 @@ class SpyderInstance extends InstanceBase {
 									this.reg[cmds[2]].relative = !!val[2]
 									this.reg[cmds[2]].numCues = val[3]
 									if (!this.script2reg[val[1]]) {
-										this.variableDefs.push({ name: `Script ${id} name`, variableId: `s_name_${id}` })
-										this.variableValues[`s_name_${id}`] = this.reg[cmds[2]].name
-										this.script2reg[val[1]] = cmds[2]
-										newReg = true
-										newNames = true
+									this.variableDefs.push({ name: `Script ${id} name`, variableId: `s_name_${id}` })
+									this.variableValues[`s_name_${id}`] = this.reg[cmds[2]].name
+									this.script2reg[val[1]] = cmds[2]
+									newReg = true
+									newNames = true
 									}
 
 									break

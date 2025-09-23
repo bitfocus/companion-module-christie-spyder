@@ -46,8 +46,8 @@ export function compileActionDefinitions(self) {
 			callback: async (action, context) => {
 				const type = action.options.type
 				const xy = action.options.xy
-				const size = await self.parseVariablesInString(action.options.size)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const size = await context.parseVariablesInString(action.options.size)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`AIR ${type} ${xy} ${size} ${lid}`)
 			},
 		},
@@ -87,8 +87,8 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const reg = action.options.reg
-				const rid = await self.parseVariablesInString(action.options.rid)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const rid = await context.parseVariablesInString(action.options.rid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ARL ${reg} ${rid} ${lid}`)
 			},
 		},
@@ -124,8 +124,8 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const type = action.options.type
-				const fp = await self.parseVariablesInString(action.options.fp)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const fp = await context.parseVariablesInString(action.options.fp)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ARO ${type} ${fp} ${lid}`)
 			},
 		},
@@ -142,7 +142,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const step = await self.parseVariablesInString(action.options.step)
+				const step = await context.parseVariablesInString(action.options.step)
 				await sendCmd(`ASC ${step}`)
 			},
 		},
@@ -175,8 +175,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const file = await self.parseVariablesInString(action.options.file)
-				const psid = await self.parseVariablesInString(action.options.psid)
+				const file = await context.parseVariablesInString(action.options.file)
+				const psid = await context.parseVariablesInString(action.options.psid)
 				const lay = action.options.lay
 				await sendCmd(`BLD ${file} ${psid} ${lay}`)
 			},
@@ -201,8 +201,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const idx = await self.parseVariablesInString(action.options.idx)
-				const dur = await self.parseVariablesInString(action.options.dur)
+				const idx = await context.parseVariablesInString(action.options.idx)
+				const dur = await context.parseVariablesInString(action.options.dur)
 				await sendCmd(`BPL ${idx} ${dur}`)
 			},
 		},
@@ -227,8 +227,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const idx = await self.parseVariablesInString(action.options.idx)
-				const dur = await self.parseVariablesInString(action.options.dur)
+				const idx = await context.parseVariablesInString(action.options.idx)
+				const dur = await context.parseVariablesInString(action.options.dur)
 				await sendCmd(`BPR ${idx} ${dur}`)
 			},
 		},
@@ -245,7 +245,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const dur = await self.parseVariablesInString(action.options.dur)
+				const dur = await context.parseVariablesInString(action.options.dur)
 				await sendCmd(`BTR ${dur}`)
 			},
 		},
@@ -269,8 +269,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const inp = await self.parseVariablesInString(action.options.inp)
-				const file = await self.parseVariablesInString(action.options.file)
+				const inp = await context.parseVariablesInString(action.options.inp)
+				const file = await context.parseVariablesInString(action.options.file)
 				await sendCmd(`CII ${inp} ${file}`)
 			},
 		},
@@ -294,8 +294,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const file = await self.parseVariablesInString(action.options.file)
+				const out = await context.parseVariablesInString(action.options.out)
+				const file = await context.parseVariablesInString(action.options.file)
 				await sendCmd(`COI ${out} ${file}`)
 			},
 		},
@@ -319,8 +319,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const file = await self.parseVariablesInString(action.options.file)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const file = await context.parseVariablesInString(action.options.file)
 				await sendCmd(`CLI ${lid} ${file}`)
 			},
 		},
@@ -365,11 +365,11 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const left = await self.parseVariablesInString(action.options.left)
-				const right = await self.parseVariablesInString(action.options.right)
-				const top = await self.parseVariablesInString(action.options.top)
-				const bottom = await self.parseVariablesInString(action.options.bottom)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const left = await context.parseVariablesInString(action.options.left)
+				const right = await context.parseVariablesInString(action.options.right)
+				const top = await context.parseVariablesInString(action.options.top)
+				const bottom = await context.parseVariablesInString(action.options.bottom)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`CRP ${left} ${right} ${top} ${bottom} ${lid}`)
 			},
 		},
@@ -386,7 +386,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				await sendCmd(`CSO ${out}`)
 			},
 		},
@@ -413,7 +413,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				let id = await self.parseVariablesInString(action.options.id)
+				let id = await context.parseVariablesInString(action.options.id)
 				const type = action.options.type
 				if (type == 'R') {id = id - 1}
 				await sendCmd(`DCK ${id} ${type}`)
@@ -450,9 +450,9 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const dur = await self.parseVariablesInString(action.options.dur)
+				const dur = await context.parseVariablesInString(action.options.dur)
 				const bus = action.options.bus
-				const dev = await self.parseVariablesInString(action.options.dev)
+				const dev = await context.parseVariablesInString(action.options.dev)
 				await sendCmd(`DMB ${dur} ${bus} ${dev}`)
 			},
 		},
@@ -476,8 +476,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const dur = await self.parseVariablesInString(action.options.dur)
-				const dev = await self.parseVariablesInString(action.options.dev)
+				const dur = await context.parseVariablesInString(action.options.dur)
+				const dev = await context.parseVariablesInString(action.options.dev)
 				await sendCmd(`DMT ${dur} ${dev}`)
 			},
 		},
@@ -501,8 +501,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lay)
-				const fkid = await self.parseVariablesInString(action.options.fkrid)
+				const lid = await context.parseVariablesInString(action.options.lay)
+				const fkid = await context.parseVariablesInString(action.options.fkrid)
 				if(lid != "") {await sendCmd(`FKR ${fkid} ${lid} F`)}
 				else {await sendCmd(`FKR ${fkid} F`)}
 			},
@@ -531,7 +531,7 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const onoff = action.options.frzonoff
-				const lid = await self.parseVariablesInString(action.options.lay)
+				const lid = await context.parseVariablesInString(action.options.lay)
 				await sendCmd(`FRZ ${onoff} ${lid}`)
 			},
 		},
@@ -607,15 +607,15 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const onoff = await self.parseVariablesInString(action.options.onoff)
-				const red = await self.parseVariablesInString(action.options.red)
-				const green = await self.parseVariablesInString(action.options.green)
-				const blue = await self.parseVariablesInString(action.options.blue)
-				const rred = await self.parseVariablesInString(action.options.rred)
-				const rgreen = await self.parseVariablesInString(action.options.rgreen)
-				const rblue = await self.parseVariablesInString(action.options.rblue)
-				const gain = await self.parseVariablesInString(action.options.gain)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const onoff = await context.parseVariablesInString(action.options.onoff)
+				const red = await context.parseVariablesInString(action.options.red)
+				const green = await context.parseVariablesInString(action.options.green)
+				const blue = await context.parseVariablesInString(action.options.blue)
+				const rred = await context.parseVariablesInString(action.options.rred)
+				const rgreen = await context.parseVariablesInString(action.options.rgreen)
+				const rblue = await context.parseVariablesInString(action.options.rblue)
+				const gain = await context.parseVariablesInString(action.options.gain)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ICK ${onoff} ${red} ${green} ${blue} ${rred} ${rgreen} ${rblue} ${rred} ${lid}`)
 			},
 		},
@@ -640,8 +640,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const inp = await self.parseVariablesInString(action.options.inp)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const inp = await context.parseVariablesInString(action.options.inp)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ICL ${inp} ${lid}`)
 			},
 		},
@@ -676,8 +676,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const cfg = await self.parseVariablesInString(action.options.cfg)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const cfg = await context.parseVariablesInString(action.options.cfg)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				const con = action.options.con
 				await sendCmd(`ICR ${cfg} ${lid} ${con}`)
 			},
@@ -714,9 +714,9 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				const edge = action.options.edge
-				const pix = await self.parseVariablesInString(action.options.pix)
+				const pix = await context.parseVariablesInString(action.options.pix)
 				await sendCmd(`ICS ${lid} ${edge} ${pix}`)
 			},
 		},
@@ -768,12 +768,12 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const bright = await self.parseVariablesInString(action.options.bright)
-				const cont = await self.parseVariablesInString(action.options.cont)
-				const hue = await self.parseVariablesInString(action.options.hue)
-				const sat = await self.parseVariablesInString(action.options.sat)
-				const gam = await self.parseVariablesInString(action.options.gam)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const bright = await context.parseVariablesInString(action.options.bright)
+				const cont = await context.parseVariablesInString(action.options.cont)
+				const hue = await context.parseVariablesInString(action.options.hue)
+				const sat = await context.parseVariablesInString(action.options.sat)
+				const gam = await context.parseVariablesInString(action.options.gam)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ILA ${bright} ${cont} ${hue} ${sat} ${gam} ${lid}`)
 			},
 		},
@@ -815,9 +815,9 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const key = action.options.key
-				const clip = await self.parseVariablesInString(action.options.clip)
-				const gain = await self.parseVariablesInString(action.options.gain)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const clip = await context.parseVariablesInString(action.options.clip)
+				const gain = await context.parseVariablesInString(action.options.gain)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ILK ${key} ${clip} ${gain} ${lid}`)
 			},
 		},
@@ -853,9 +853,9 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				const edge = action.options.edge
-				const pix = await self.parseVariablesInString(action.options.pix)
+				const pix = await context.parseVariablesInString(action.options.pix)
 				await sendCmd(`IRA ${lid} ${edge} ${pix}`)
 			},
 		},
@@ -880,8 +880,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const prop = await self.parseVariablesInString(action.options.prop)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const prop = await context.parseVariablesInString(action.options.prop)
 				await sendCmd(`ISP ${lid} ${prop}`)
 			},
 		},
@@ -947,14 +947,14 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const thick = await self.parseVariablesInString(action.options.thick)
-				const red = await self.parseVariablesInString(action.options.red)
-				const green = await self.parseVariablesInString(action.options.green)
-				const blue = await self.parseVariablesInString(action.options.blue)
-				const hbev = await self.parseVariablesInString(action.options.hbev)
-				const vbev = await self.parseVariablesInString(action.options.vbev)
-				const soft = await self.parseVariablesInString(action.options.soft)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const thick = await context.parseVariablesInString(action.options.thick)
+				const red = await context.parseVariablesInString(action.options.red)
+				const green = await context.parseVariablesInString(action.options.green)
+				const blue = await context.parseVariablesInString(action.options.blue)
+				const hbev = await context.parseVariablesInString(action.options.hbev)
+				const vbev = await context.parseVariablesInString(action.options.vbev)
+				const soft = await context.parseVariablesInString(action.options.soft)
 				await sendCmd(`KBD ${lid} ${thick} ${red} ${green} ${blue} ${hbev} ${vbev} ${soft}`)
 			},
 		},
@@ -997,9 +997,9 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const pos = action.options.pos
-				const hor = await self.parseVariablesInString(action.options.hor)
-				const ver = await self.parseVariablesInString(action.options.ver)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const hor = await context.parseVariablesInString(action.options.hor)
+				const ver = await context.parseVariablesInString(action.options.ver)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`KPS ${pos} ${hor} ${ver} ${lid}`)
 			},
 		},
@@ -1051,12 +1051,12 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const hor = await self.parseVariablesInString(action.options.hor)
-				const ver = await self.parseVariablesInString(action.options.ver)
-				const size = await self.parseVariablesInString(action.options.size)
-				const trans = await self.parseVariablesInString(action.options.trans)
-				const soft = await self.parseVariablesInString(action.options.soft)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const hor = await context.parseVariablesInString(action.options.hor)
+				const ver = await context.parseVariablesInString(action.options.ver)
+				const size = await context.parseVariablesInString(action.options.size)
+				const trans = await context.parseVariablesInString(action.options.trans)
+				const soft = await context.parseVariablesInString(action.options.soft)
 
 				await sendCmd(`KSH ${lid} ${hor} ${ver} ${size} ${trans} ${soft}`)
 			},
@@ -1082,8 +1082,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const prop = await self.parseVariablesInString(action.options.prop)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const prop = await context.parseVariablesInString(action.options.prop)
 				await sendCmd(`KSP ${lid} ${prop}`)
 			},
 		},
@@ -1107,8 +1107,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const size = await self.parseVariablesInString(action.options.size)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const size = await context.parseVariablesInString(action.options.size)
 				await sendCmd(`KSZ ${size} ${lid}`)
 			},
 		},
@@ -1187,9 +1187,9 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const tid = await self.parseVariablesInString(action.options.tid)
-				const name = await self.parseVariablesInString(action.options.name)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const tid = await context.parseVariablesInString(action.options.tid)
+				const name = await context.parseVariablesInString(action.options.name)
 				let pos = ""
 				let crop = ""
 				let clone = ""
@@ -1234,8 +1234,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const trans = await self.parseVariablesInString(action.options.trans)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const trans = await context.parseVariablesInString(action.options.trans)
 				await sendCmd(`KTP ${trans} ${lid}`)
 			},
 		},
@@ -1260,8 +1260,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
-				const tid = await self.parseVariablesInString(action.options.tid)
+				const lid = await context.parseVariablesInString(action.options.lid)
+				const tid = await context.parseVariablesInString(action.options.tid)
 				await sendCmd(`KTR ${tid} ${lid}`)
 			},
 		},
@@ -1321,8 +1321,8 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const eid = action.options.eid
-				const dur = await self.parseVariablesInString(action.options.dur)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const dur = await context.parseVariablesInString(action.options.dur)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`LAC ${eid} ${dur} ${lid}`)
 			},
 		},
@@ -1358,9 +1358,9 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const pid = await self.parseVariablesInString(action.options.pid)
+				const pid = await context.parseVariablesInString(action.options.pid)
 				const vis = action.options.vis
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`LAP ${pid} ${vis} ${lid}`)
 			},
 		},
@@ -1410,9 +1410,9 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				const mode = action.options.mode
-				const ofs = await self.parseVariablesInString(action.options.ofs)
+				const ofs = await context.parseVariablesInString(action.options.ofs)
 				const ofstype = action.options.ofstype
 				await sendCmd(`LCC ${lid} ${mode} ${ofs} ${ofstype}`)
 			},
@@ -1468,8 +1468,8 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const as = action.options.as
-				const name = await self.parseVariablesInString(action.options.name)
-				let rid = await self.parseVariablesInString(action.options.rid) 
+				const name = await context.parseVariablesInString(action.options.name)
+				let rid = await context.parseVariablesInString(action.options.rid) 
 				const from = action.options.from
 				const mix = action.options.mix
 				rid = rid -1
@@ -1494,8 +1494,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const name = await self.parseVariablesInString(action.options.name)
-				const out = await self.parseVariablesInString(action.options.out)
+				const name = await context.parseVariablesInString(action.options.name)
+				const out = await context.parseVariablesInString(action.options.out)
 				await sendCmd(`LSO ${name} ${out}`)
 			},
 		},
@@ -1544,10 +1544,10 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const pos = action.options.pos
-				const hor = await self.parseVariablesInString(action.options.hor)
-				const ver = await self.parseVariablesInString(action.options.ver)
-				const size = await self.parseVariablesInString(action.options.size)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const hor = await context.parseVariablesInString(action.options.hor)
+				const ver = await context.parseVariablesInString(action.options.ver)
+				const size = await context.parseVariablesInString(action.options.size)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`LSP ${pos} ${hor} ${ver} ${size} ${lid}`)
 			},
 		},
@@ -1578,9 +1578,9 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const vid = await self.parseVariablesInString(action.options.vid)
-				const inp = await self.parseVariablesInString(action.options.inp)
+				const out = await context.parseVariablesInString(action.options.out)
+				const vid = await context.parseVariablesInString(action.options.vid)
+				const inp = await context.parseVariablesInString(action.options.inp)
 				await sendCmd(`MVAC ${out} ${vid} ${inp}`)
 			},
 		},
@@ -1644,13 +1644,13 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				const vtyp = action.options.vtyp
-				const cid = await self.parseVariablesInString(action.options.cid)
-				const posx = await self.parseVariablesInString(action.options.posx)
-				const posy = await self.parseVariablesInString(action.options.posy)
-				const sizex = await self.parseVariablesInString(action.options.sizex)
-				const sizey = await self.parseVariablesInString(action.options.sizey)
+				const cid = await context.parseVariablesInString(action.options.cid)
+				const posx = await context.parseVariablesInString(action.options.posx)
+				const posy = await context.parseVariablesInString(action.options.posy)
+				const sizex = await context.parseVariablesInString(action.options.sizex)
+				const sizey = await context.parseVariablesInString(action.options.sizey)
 				await sendCmd(`MVAS ${out} ${vtyp} ${cid} ${posx} ${posy} ${sizex} ${sizey}`)
 			},
 		},
@@ -1667,7 +1667,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				await sendCmd(`MVCA ${out}`)
 			},
 		},
@@ -1747,16 +1747,16 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const vid = await self.parseVariablesInString(action.options.vid)
-				const posx = await self.parseVariablesInString(action.options.posx)
-				const posy = await self.parseVariablesInString(action.options.posy)
-				const sizex = await self.parseVariablesInString(action.options.sizex)
-				const sizey = await self.parseVariablesInString(action.options.sizey)
-				const bor = await self.parseVariablesInString(action.options.bor)
-				const rbor = await self.parseVariablesInString(action.options.rbor)
-				const gbor = await self.parseVariablesInString(action.options.gbor)
-				const bbor = await self.parseVariablesInString(action.options.bbor)
+				const out = await context.parseVariablesInString(action.options.out)
+				const vid = await context.parseVariablesInString(action.options.vid)
+				const posx = await context.parseVariablesInString(action.options.posx)
+				const posy = await context.parseVariablesInString(action.options.posy)
+				const sizex = await context.parseVariablesInString(action.options.sizex)
+				const sizey = await context.parseVariablesInString(action.options.sizey)
+				const bor = await context.parseVariablesInString(action.options.bor)
+				const rbor = await context.parseVariablesInString(action.options.rbor)
+				const gbor = await context.parseVariablesInString(action.options.gbor)
+				const bbor = await context.parseVariablesInString(action.options.bbor)
 				await sendCmd(`MVKF ${out} ${vid} ${posx} ${posy} ${sizex} ${sizey} ${bor} ${rbor} ${gbor} ${bbor}`)
 			},
 		},
@@ -1779,8 +1779,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const name = await self.parseVariablesInString(action.options.name)
+				const out = await context.parseVariablesInString(action.options.out)
+				const name = await context.parseVariablesInString(action.options.name)
 				await sendCmd(`MVPL ${out} ${name}`)
 			},
 		},
@@ -1814,9 +1814,9 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				const type = action.options.type
-				const name = await self.parseVariablesInString(action.options.name)
+				const name = await context.parseVariablesInString(action.options.name)
 				await sendCmd(`MVPR ${out} ${type} ${name}`)
 			},
 		},
@@ -1883,13 +1883,13 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				const edge = action.options.edge
 				const ena = action.options.ena
-				const width = await self.parseVariablesInString(action.options.width)
+				const width = await context.parseVariablesInString(action.options.width)
 				const mode = action.options.mode
-				const curv1 = await self.parseVariablesInString(action.options.curv1)
-				const curv2 = await self.parseVariablesInString(action.options.curv2)
+				const curv1 = await context.parseVariablesInString(action.options.curv1)
+				const curv2 = await context.parseVariablesInString(action.options.curv2)
 				await sendCmd(`OCB ${out} ${edge} ${ena} ${width} ${mode} ${curv1} ${curv2}`)
 			},
 		},
@@ -1944,10 +1944,10 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const hact = await self.parseVariablesInString(action.options.hact)
-				const vact = await self.parseVariablesInString(action.options.vact)
-				const rate = await self.parseVariablesInString(action.options.rate)
+				const out = await context.parseVariablesInString(action.options.out)
+				const hact = await context.parseVariablesInString(action.options.hact)
+				const vact = await context.parseVariablesInString(action.options.vact)
+				const rate = await context.parseVariablesInString(action.options.rate)
 				const int = action.options.int
 				const rbt = action.options.rbt
 				await sendCmd(`OCF ${out} ${hact} ${vact} ${rate} ${int} ${rbt}`)
@@ -1978,9 +1978,9 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const hstart = await self.parseVariablesInString(action.options.hstart)
-				const vstart = await self.parseVariablesInString(action.options.vstart)
+				const out = await context.parseVariablesInString(action.options.out)
+				const hstart = await context.parseVariablesInString(action.options.hstart)
+				const vstart = await context.parseVariablesInString(action.options.vstart)
 				await sendCmd(`OCM ${out} Normal ${hstart} ${vstart}`)
 			},
 		},
@@ -2003,8 +2003,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const pre = await self.parseVariablesInString(action.options.pre)
+				const out = await context.parseVariablesInString(action.options.out)
+				const pre = await context.parseVariablesInString(action.options.pre)
 				if (pre) {await sendCmd(`OCM ${out} Multiviewer ${pre}`)}
 				else {await sendCmd(`OCM ${out} Multiviewer`)}
 			},
@@ -2029,8 +2029,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const pid = await self.parseVariablesInString(action.options.pid)
+				const out = await context.parseVariablesInString(action.options.out)
+				const pid = await context.parseVariablesInString(action.options.pid)
 				await sendCmd(`OCM ${out} Scaled ${pid}`)
 			},
 		},
@@ -2047,14 +2047,14 @@ export function compileActionDefinitions(self) {
 				},
 				{
 					type: 'textinput',
-					label: 'Source Name',
+					label: 'Source Name (Cannot have Spaces)',
 					useVariables: true,
 					id: 'src',
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const src = await self.parseVariablesInString(action.options.src)
+				const out = await context.parseVariablesInString(action.options.out)
+				const src = await context.parseVariablesInString(action.options.src)
 				await sendCmd(`OCM ${out} Aux ${src}`)
 			},
 		},
@@ -2071,7 +2071,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				await sendCmd(`OCS ${out}`)
 			},
 		},
@@ -2088,7 +2088,7 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
+				const out = await context.parseVariablesInString(action.options.out)
 				await sendCmd(`OCU ${out}`)
 			},
 		},
@@ -2116,7 +2116,7 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const onoff = action.options.frzonoff
-				const out = await self.parseVariablesInString(action.options.output)
+				const out = await context.parseVariablesInString(action.options.output)
 				await sendCmd(`OFZ ${onoff} ${out}`)
 			},
 		},
@@ -2141,8 +2141,8 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const out = await self.parseVariablesInString(action.options.out)
-				const prop = await self.parseVariablesInString(action.options.prop)
+				const out = await context.parseVariablesInString(action.options.out)
+				const prop = await context.parseVariablesInString(action.options.prop)
 				await sendCmd(`OSP ${out} ${prop}`)
 			},
 		},
@@ -2182,10 +2182,10 @@ export function compileActionDefinitions(self) {
 
 			],
 			callback: async (action, context) => {
-				const rid = await self.parseVariablesInString(action.options.rid)
+				const rid = await context.parseVariablesInString(action.options.rid)
 				const swty = action.options.swty
-				const out = await self.parseVariablesInString(action.options.out)
-				const inp = await self.parseVariablesInString(action.options.inp)
+				const out = await context.parseVariablesInString(action.options.out)
+				const inp = await context.parseVariablesInString(action.options.inp)
 				await sendCmd(`RCR ${rid} ${swty} ${out} ${inp}`)
 			},
 		},
@@ -2219,8 +2219,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				let sid = await self.parseVariablesInString(action.options.sidx)
-				const cid = await self.parseVariablesInString(action.options.cidx)
+				let sid = await context.parseVariablesInString(action.options.sidx)
+				const cid = await context.parseVariablesInString(action.options.cidx)
 				const opt = action.options.type
 				if (opt == "R") {sid = sid - 1}
 				await sendCmd(`RSC ${sid} ${cid} ${opt}`)
@@ -2248,7 +2248,7 @@ export function compileActionDefinitions(self) {
 				},	
 			],
 			callback: async (action, context) => {
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`SCL ${lid}`)
 			},
 		},
@@ -2291,8 +2291,8 @@ export function compileActionDefinitions(self) {
 				},	
 			],
 			callback: async (action, context) => {
-				const file = await self.parseVariablesInString(action.options.file)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const file = await context.parseVariablesInString(action.options.file)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`SLD ${file} ${lid}`)
 			},
 		},
@@ -2322,7 +2322,7 @@ export function compileActionDefinitions(self) {
 			options: [
 				{
 					type: 'textinput',
-					label: 'Source Name',
+					label: 'Source Name (Cannot have Spaces)',
 					useVariables: true,
 					id: 'src',
 				},	
@@ -2335,8 +2335,8 @@ export function compileActionDefinitions(self) {
 				},	
 			],
 			callback: async (action, context) => {
-				const src = await self.parseVariablesInString(action.options.src)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const src = await context.parseVariablesInString(action.options.src)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`SRA ${src} ${lid}`)
 			},
 		},
@@ -2360,8 +2360,8 @@ export function compileActionDefinitions(self) {
 				},
 			],
 			callback: async (action, context) => {
-				const lid1 = await self.parseVariablesInString(action.options.lid1)
-				const lid2 = await self.parseVariablesInString(action.options.lid2)
+				const lid1 = await context.parseVariablesInString(action.options.lid1)
+				const lid2 = await context.parseVariablesInString(action.options.lid2)
 				await sendCmd(`SWA ${lid1} ${lid2}`)
 			},
 		},
@@ -2389,7 +2389,7 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const tar = action.options.tar
-				const id = await self.parseVariablesInString(action.options.id)
+				const id = await context.parseVariablesInString(action.options.id)
 				await sendCmd(`TPC ${tar} ${id}`)
 			},
 		},
@@ -2529,18 +2529,18 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const tar = action.options.tar
-				const id = await self.parseVariablesInString(action.options.id)
+				const id = await context.parseVariablesInString(action.options.id)
 				const pat = action.options.pat
 				const oln = action.options.oln
 				const cir = action.options.cir
 				const ctx = action.options.ctx
 				const grd = action.options.grd
-				const br = await self.parseVariablesInString(action.options.br)
-				const bg = await self.parseVariablesInString(action.options.bg)
-				const bb = await self.parseVariablesInString(action.options.bb)
-				const fr = await self.parseVariablesInString(action.options.fr)
-				const fg = await self.parseVariablesInString(action.options.fg)
-				const fb = await self.parseVariablesInString(action.options.fb)
+				const br = await context.parseVariablesInString(action.options.br)
+				const bg = await context.parseVariablesInString(action.options.bg)
+				const bb = await context.parseVariablesInString(action.options.bb)
+				const fr = await context.parseVariablesInString(action.options.fr)
+				const fg = await context.parseVariablesInString(action.options.fg)
+				const fb = await context.parseVariablesInString(action.options.fb)
 				await sendCmd(`TPL ${tar} ${id} ${pat} ${oln} ${cir} ${ctx} ${grd} ${br} ${bg} ${bb} ${fr} ${fg} ${fb}`)
 			},
 		},
@@ -2575,8 +2575,8 @@ export function compileActionDefinitions(self) {
 			],
 			callback: async (action, context) => {
 				const mix = action.options.mix
-				const dur = await self.parseVariablesInString(action.options.dur)
-				const lid = await self.parseVariablesInString(action.options.lay)
+				const dur = await context.parseVariablesInString(action.options.dur)
+				const lid = await context.parseVariablesInString(action.options.lay)
 				await sendCmd(`TRN ${mix} ${dur} ${lid}`)
 			},
 		},
@@ -2621,11 +2621,11 @@ export function compileActionDefinitions(self) {
 				},	
 			],
 			callback: async (action, context) => {
-				const rec = await self.parseVariablesInString(action.options.rec)
-				const zoom = await self.parseVariablesInString(action.options.zoom)
-				const xpan = await self.parseVariablesInString(action.options.xpan)
-				const ypan = await self.parseVariablesInString(action.options.ypan)
-				const lid = await self.parseVariablesInString(action.options.lid)
+				const rec = await context.parseVariablesInString(action.options.rec)
+				const zoom = await context.parseVariablesInString(action.options.zoom)
+				const xpan = await context.parseVariablesInString(action.options.xpan)
+				const ypan = await context.parseVariablesInString(action.options.ypan)
+				const lid = await context.parseVariablesInString(action.options.lid)
 				await sendCmd(`ZPA ${rec} ${zoom} ${xpan} ${ypan} ${lid}`)
 			},
 		},
