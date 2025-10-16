@@ -33,7 +33,7 @@ class SpyderInstance extends InstanceBase {
 			c = c.slice(0, 2)
 		}
 		c = c.join(' ')
-		this.log('info', `Sending ${cmd} to ${this.config.host}`)
+		// this.log('info', `Sending ${cmd} to ${this.config.host}`)
 
 		if (this.udp !== undefined) {
 			await this.udp.send('spyder\x00\x00\x00\x00' + cmd)
@@ -104,7 +104,7 @@ class SpyderInstance extends InstanceBase {
 				if (cmd == undefined || cmd.cmd.includes('NaN')) {
 					return // unexpected response
 				}
-				this.log('info', `Rcvd: ${this.nextCmd.length}:(${cmd.cmd}) ${msg}`)
+				// this.log('info', `Rcvd: ${this.nextCmd.length}:(${cmd.cmd}) ${msg}`)
 
 				switch (msg.slice(0, 1)) {
 					case '0': // all good
@@ -119,6 +119,7 @@ class SpyderInstance extends InstanceBase {
 						let newNames = false
 
 						switch (cmds[0]) {
+
 							case 'RRL':
 								switch (cmds[1]) {
 									case '4':
@@ -232,15 +233,6 @@ class SpyderInstance extends InstanceBase {
 										}
 									break
 
-								case 'SCR':
-									let nv = !!(msg.split(' ')[1] == 1)
-									let rr = cmds[2] == 'R' ? cmds[1] : this.script2reg[cmds[1]]
-									if (nv != this.reg[rr].active) {
-										this.reg[rr].active = nv
-										this.checkFeedbacks('inp_ok')
-									}
-									break
-
 								case 'RRD':
 									const val = msg.split(' ')
 									if (val.length != 4 || cmds[2] == 'NaN') {
@@ -258,8 +250,16 @@ class SpyderInstance extends InstanceBase {
 									newReg = true
 									newNames = true
 									}
-
 									break
+									
+								case 'SCR':
+									let nv = !!(msg.split(' ')[1] == 1)
+									let rr = cmds[2] == 'R' ? cmds[1] : this.script2reg[cmds[1]]
+									if (nv != this.reg[rr].active) {
+									this.reg[rr].active = nv
+									this.checkFeedbacks('inp_ok')
+									}
+									break	
 						}
 						if (newReg) {
 							this.setVariableDefinitions(this.variableDefs)
