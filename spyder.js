@@ -321,12 +321,12 @@ class SpyderInstance extends InstanceBase {
 				this.saveLast = cmd
 			}
 			// grab layer keyframe values
-			for (let c = 2; c < 26; c++) { 
-				let cmd = `RLK ${c}`
-				await this.cueCmd(cmd)
-				this.lastCount = 0
-				this.saveLast = cmd
-			}
+			//for (let c = 2; c < 26; c++) { 
+			//	let cmd = `RLK ${c}`
+			//	await this.cueCmd(cmd)
+			//	this.lastCount = 0
+			//	this.saveLast = cmd
+			//}
 		}
 	}	
 	// Return config fields for web config
