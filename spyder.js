@@ -208,30 +208,30 @@ class SpyderInstance extends InstanceBase {
 										break										
 								}
 
-								case 'RLK':
-									for (let k = 2; k < 26; k++) {
-										if(cmds[1] == k) {																						
-											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Pos`, variableId: `l${k - 1}_xpos` })) {
-											newReg = true
-											}
-											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Pos`, variableId: `l${k - 1}_ypos` })) {
-											newReg = true
-											}
-											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Size`, variableId: `l${k - 1}_xsize` })) {
-											newReg = true
-											}
-											if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Size`, variableId: `l${k - 1}_ysize` })) {
-											newReg = true
-											}
-											let l = msg.slice(2).split(' ')
-											this.variableValues[`l${k - 1}_xpos`] = l[2]
-											this.variableValues[`l${k - 1}_ypos`] = l[3]
-											this.variableValues[`l${k - 1}_xsize`] = l[4]
-											this.variableValues[`l${k - 1}_ysize`] = l[5]
-											newNames = true
-											}
-										}
-									break
+								//case 'RLK':
+								//	for (let k = 2; k < 26; k++) {
+								//		if(cmds[1] == k) {																						
+								//			if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Pos`, variableId: `l${k - 1}_xpos` })) {
+								//			newReg = true
+								//			}
+								//			if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Pos`, variableId: `l${k - 1}_ypos` })) {
+								//			newReg = true
+								//			}
+								//			if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Size`, variableId: `l${k - 1}_xsize` })) {
+								//			newReg = true
+								//			}
+								//			if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // Y Size`, variableId: `l${k - 1}_ysize` })) {
+								//			newReg = true
+								//			}
+								//			let l = msg.slice(2).split(' ')
+								//			this.variableValues[`l${k - 1}_xpos`] = l[2]
+								//			this.variableValues[`l${k - 1}_ypos`] = l[3]
+								//			this.variableValues[`l${k - 1}_xsize`] = l[4]
+								//			this.variableValues[`l${k - 1}_ysize`] = l[5]
+								//			newNames = true
+								//			}
+								//		}
+								//	break
 
 								case 'RRD':
 									const val = msg.split(' ')
