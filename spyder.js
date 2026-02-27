@@ -208,8 +208,8 @@ class SpyderInstance extends InstanceBase {
 										break										
 								}
 
-								//case 'RLK':
-								//	for (let k = 2; k < 26; k++) {
+								case 'RLK':
+									for (let k = 2; k < 26; k++) {
 								//		if(cmds[1] == k) {																						
 								//			if (this.addVariableDefIfNotExists({ name: `Layer ${k - 1} // X Pos`, variableId: `l${k - 1}_xpos` })) {
 								//			newReg = true
@@ -230,8 +230,8 @@ class SpyderInstance extends InstanceBase {
 								//			this.variableValues[`l${k - 1}_ysize`] = l[5]
 								//			newNames = true
 								//			}
-								//		}
-								//	break
+										}
+									break
 
 								case 'RRD':
 									const val = msg.split(' ')
@@ -283,7 +283,7 @@ class SpyderInstance extends InstanceBase {
 				this.variableDefs = []
 				this.variableValues = {}
 				this.poll()
-				this.pollTimer = setInterval(async () => await this.poll(), 2500)
+				this.pollTimer = setInterval(async () => await this.poll(), 500)
 			})
 		}
 	}
