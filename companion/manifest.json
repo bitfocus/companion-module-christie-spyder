@@ -2,7 +2,7 @@
 	"id": "christie-spyder",
 	"name": "christie-spyder",
 	"shortname": "spyder",
-	"description": "spyder plugin for Companion",
+	"description": "Spyder plugin for Companion",
 	"version": "0.0.0",
 	"license": "ISC",
 	"repository": "git+https://github.com/bitfocus/companion-module-christie-spyder.git",
@@ -15,6 +15,10 @@
 		{
 			"name": "John A Knight, Jr",
 			"email": "istnv@istnv.com"
+		},
+		{
+			"name": "Jonah Luscombe",
+			"email": "jonah@carbonarcprojects.com"
 		}
 	],
 	"legacyIds": [
@@ -28,7 +32,7 @@
 	},
 	"manufacturer": "Christie",
 	"products": [
-		"Spyder X20/X80"
+		"Spyder X20 / X80 / S"
 	],
 	"keywords": [
 		"Image Processing"

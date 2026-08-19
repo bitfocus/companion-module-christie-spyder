@@ -3,6 +3,7 @@ import { combineRgb, Regex } from '@companion-module/base'
 export function GetFeedbackDefinitions(self) {
 
 	return {
+		
 		inp_ok: {
 			type: 'boolean',
 			name: 'Script Active',
@@ -14,20 +15,19 @@ export function GetFeedbackDefinitions(self) {
 			options: [
 				{
 					type: 'dropdown',
-					label: 'ID Type being recalled',
+					label: 'ID Type',
 					id: 'type',
 					default: 'S',
 					choices: [
-						{ id: 'S', label: 'ScriptID (default)' },
-						{ id: 'R', label: 'RegisterID' },
+						{ id: 'S', label: 'Script ID' },
+						{ id: 'R', label: 'Register ID (CK Slot)' },
 					],
 				},
 				{
 					type: 'textinput',
-					label: 'Script ID/Register ID',
+					label: 'ID',
 					id: 'sidx',
-					default: 1,
-					regex: Regex.NUMBER,
+					default: 0,
 				},
 			],
 			callback: (fb) => {
