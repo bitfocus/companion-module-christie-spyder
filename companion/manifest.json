@@ -4,7 +4,7 @@
 	"shortname": "spyder",
 	"description": "spyder plugin for Companion",
 	"version": "0.0.0",
-	"license": "ISC",
+	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-christie-spyder.git",
 	"bugs": "https://github.com/bitfocus/companion-module-christie-spyder/issues",
 	"maintainers": [
